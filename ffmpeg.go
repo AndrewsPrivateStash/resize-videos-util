@@ -394,10 +394,30 @@ func is_windows_os() bool {
 
 }
 
+// check to see if dir exists
+func dir_exists(path string) (bool, error) {
+	info, err := os.Stat(path)
+	if os.IsNotExist(err) {
+		return false, nil // Directory does not exist
+	}
+	if err != nil {
+		return false, err // Other error (e.g., permissions)
+	}
+	return info.IsDir(), nil // Return true if it's a directory, false otherwise
+}
+
 // create a dir if it doesn't exist
 func make_dir(path string) {
-	log.Printf("making output direcotry %s", path)
+	exists, err := dir_exists(path)
+	if err != nil {
+		log.Fatalf("could not check directory %s\n%s\n", path, err)
+	}
+	if exists {
+		return
+	}
+
+	log.Printf("making output direcotry %s\n", path)
 	if err := os.MkdirAll(path, 0755); err != nil {
-		log.Fatalf("could not create dir: %s", err)
+		log.Fatalf("could not create dir: %s\n", err)
 	}
 }
