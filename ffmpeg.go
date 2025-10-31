@@ -320,9 +320,9 @@ func (ffm FFmpeg) reduce_framerate() error {
 		"-y",
 		"-i", use_path, // Input file
 		"-filter:v", fmt.Sprintf("fps=%d", ffm.Opts.Framerate),
-		"-c:v", "libx264",
-		"-crf", "18",
-		"-preset", "slow",
+		// "-c:v", "libx264",
+		// "-crf", "18",
+		// "-preset", "slow",
 		"-c:a", "copy",
 		"_ffmpeg_tmp.mp4", // Output file
 	}
